@@ -7,10 +7,11 @@ struct Node {
     Node* next;
 };
 
-// Linked list class
+// Singly linked list class
 class SinglyLinkedList {
 private:
     Node* head;
+
 public:
     SinglyLinkedList() {
         head = nullptr;
@@ -21,24 +22,22 @@ public:
         Node* newNode = new Node();
         newNode->data = val;
         newNode->next = nullptr;
+
         if (head == nullptr) {
             head = newNode;
-        } else {
-            Node* temp = head;
-            while (temp->next != nullptr)
-                temp = temp->next;
-            temp->next = newNode;
+            return;
         }
+
+        Node* temp = head;
+        while (temp->next != nullptr)
+            temp = temp->next;
+
+        temp->next = newNode;
     }
 
     // Display list
     void display() {
         Node* temp = head;
-        if (temp == nullptr) {
-            cout << "List is empty.\n";
-            return;
-        }
-        cout << "Linked List: ";
         while (temp != nullptr) {
             cout << temp->data << " -> ";
             temp = temp->next;
@@ -46,22 +45,20 @@ public:
         cout << "NULL\n";
     }
 
-    // Find middle
-    void findMiddle() {
-        if (head == nullptr) {
-            cout << "List is empty.\n";
-            return;
+    // Reverse linked list
+    void reverseList() {
+        Node* prev = nullptr;
+        Node* current = head;
+        Node* next = nullptr;
+
+        while (current != nullptr) {
+            next = current->next;    // store next
+            current->next = prev;    // reverse pointer
+            prev = current;          // move prev forward
+            current = next;          // move current forward
         }
 
-        Node* slow = head;
-        Node* fast = head;
-
-        while (fast != nullptr && fast->next != nullptr) {
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-
-        cout << "Middle element: " << slow->data << endl;
+        head = prev;  // update head
     }
 };
 
@@ -71,14 +68,20 @@ int main() {
 
     cout << "Enter number of nodes: ";
     cin >> n;
-    cout << "Enter " << n << " node values:\n";
+
+    cout << "Enter values:\n";
     for (int i = 0; i < n; i++) {
         cin >> val;
         list.insertAtEnd(val);
     }
 
+    cout << "\nOriginal List: ";
     list.display();
-    list.findMiddle();
+
+    list.reverseList();
+
+    cout << "Reversed List: ";
+    list.display();
 
     return 0;
 }
